@@ -53,5 +53,14 @@ class Load_data extends CI_Controller {
 		->set_output(file_get_contents($filepath));
 	}
 
+	public function surat_keluar(){
+		$Id = $this->uri->segment(3);
+		$file = $this->m_load_data->get_surat_keluar($Id);
+		$filepath = "./public/file/surat_keluar/".$file->File;
+		$this->output
+		->set_content_type('application/pdf')
+		->set_output(file_get_contents($filepath));
+	}
+
 	
 }
