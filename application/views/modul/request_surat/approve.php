@@ -73,7 +73,7 @@
                                     <option value=''>..:: Pilih Jenis Surat ::..</option>
                                     <?php foreach($jenis_surat as $js){ ?>
                                         <option value='<?= $js->Kode ?>'><?= $js->Kode ?> - <?= $js->Jenis ?></option>
-                                    <? } ?>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>
@@ -119,5 +119,5 @@
       </div>
     </section>
   </div>
-  
+
   <?php $this->load->view('modul/request_surat/js'); ?>
