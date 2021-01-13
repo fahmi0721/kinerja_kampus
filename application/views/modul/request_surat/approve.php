@@ -86,6 +86,7 @@
                                     <input class='form-control FormInput' readonly  type='text' autocomplete='off' placeholder='Nomor Surat' name='NoSurat' id='NoSurat'>
                                 </div>
                             </div>
+                            
 
                             <div class='col-sm-6'>
                                 <label class="control-label">File</label>
