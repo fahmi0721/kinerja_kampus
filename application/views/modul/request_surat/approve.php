@@ -73,7 +73,7 @@
                                     <option value=''>..:: Pilih Jenis Surat ::..</option>
                                     <?php foreach($jenis_surat as $js){ ?>
                                         <option value='<?= $js->Kode ?>'><?= $js->Kode ?> - <?= $js->Jenis ?></option>
-                                    <? } ?>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>
@@ -86,6 +86,7 @@
                                     <input class='form-control FormInput' readonly  type='text' autocomplete='off' placeholder='Nomor Surat' name='NoSurat' id='NoSurat'>
                                 </div>
                             </div>
+                            
 
                             <div class='col-sm-6'>
                                 <label class="control-label">File</label>
@@ -119,5 +120,5 @@
       </div>
     </section>
   </div>
-  
+
   <?php $this->load->view('modul/request_surat/js'); ?>
