@@ -294,10 +294,10 @@ function SubmitDisposisiUpdate(){
                     Customsukses("NT-DNS", "001", r['pesan'], "proses");
                     setTimeout(function(){
                         $("#proses").html("");
-                        
+                        location.reload();
                     },3000);
                     scrolltop();
-                    location.reload();
+                    
                     
                 }else{
                     Customerror("NT-DNS", "001", r['pesan'], "proses");
