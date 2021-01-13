@@ -3,7 +3,7 @@ $(document).ready(function(){
     <?php if(empty($this->uri->segment(2)) || $this->uri->segment(2) == "index"){ ?>
         LoadData();
     <?php } ?>
-    <?php if($this->uri->segment(2) == "approve"){ ?>
+    <?php if($this->uri->segment(2) == "tambah" OR $this->uri->segment(2) == "edit"){ ?>
         SearchForm(); 
     <?php } ?>
     
@@ -15,22 +15,23 @@ $(document).ready(function(){
 function GetNomorSurat(){
     var Kode = $("#KodeJenisSurat").val();
     var TglSurat = $("#TglSurat").val();
-    $.ajax({
-        type : "POST",
-        url : "<?= base_url('request_surat/get_nomor_surat/') ?>",
-        data : "Kode="+Kode+"&TglSurat="+TglSurat,
-        success : function(res){
-            var r = JSON.parse(res);
-            if(r['status'] == "sukses"){
-                $("#NoSurat").val(r['pesan']);
-            }else{
-                Customerror("REQ-SURAT", "001", $res['pesan'],"proses");
+    console.log(Kode);
+        $.ajax({
+            type : "POST",
+            url : "<?= base_url('surat_keluar/get_nomor_surat/') ?>",
+            data : "Kode="+Kode+"&TglSurat="+TglSurat,
+            success : function(res){
+                var r = JSON.parse(res);
+                if(r['status'] == "sukses"){
+                    $("#NoSurat").val(r['pesan']);
+                }else{
+                    Customerror("REQ-SURAT", "001", $res['pesan'],"proses");
+                }
+            },
+            error: function(er){
+                console.log(er);
             }
-        },
-        error: function(er){
-            console.log(er);
-        }
-    })
+        })
 }
 
 function SearchForm() {
@@ -100,13 +101,19 @@ function pagination(page_num, total_page) {
 	$("#Paging").html(paging);
 }
 
+function get_tgl_indo(tgl){
+    var bulan = ["",'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    var spl = tgl.split("-");
+    return spl[2]+" "+bulan[parseInt(spl[1])]+" "+spl[0];
+}
+
 function LoadData(page){
     page = page != undefined ? page : 1;
     
     var iData = $("#Filter").serialize();
     $.ajax({
         type : "POST",
-        url : "<?= base_url('request_surat/show_data/') ?>",
+        url : "<?= base_url('surat_keluar/show_data/') ?>",
         data : "Page="+page+"&"+iData,
         beforeSend: function(){
             StartLoad();
@@ -123,35 +130,32 @@ function LoadData(page){
                     html += "<tr>";
                         html += "<td class='text-center'>"+No+"</td>";
                         html += "<td>";
-                            html += iData['Perihal']+"<br><small>No Dokumen : <b>"+iData['NoDokumen']+"</b></small><br><small>Kepada : <b>"+iData['Kepada']+"</b></small>";
+                            html += iData['NoSurat']+"<br><small>No Dokumen : <b>"+iData['NoDokumen']+"</b></small><br><small>Kepada : <b>"+iData['Kepada']+"</b></small>";
+                        html += "</td>";
+                        html += "<td>";
+                            html += get_tgl_indo(iData['TglSurat'])+"<br><small>Tanggal Approve : <b>"+get_tgl_indo(iData['TglCreateApp'])+"</b></small>";
                         html += "</td>";
                        
                         html += "<td>";
-                            html += iData['TglSurat']+"<br><small>Tanggal Approve : <b>"+iData['TglApprove']+"</b></small>";
+                            html += iData['Perihal']+"<br><small>Keterangan : <b>"+iData['Keterangan']+"</b></small>";
                         html += "</td>";
-                        html += "<td class='text-center'>";
+                        html += "<td>";
+                            html += iData['Perihal']+"<br><small>Request By : <b>"+iData['Authorss']+"</b></small><br><small>Approve By : <b>"+iData['AuthorssApp']+"</b></small>";
+                        html += "</td>";
+                        html += "<td>";
                             if(iData['Status'] == "0"){
-                                NoSrt = "nomor surat belum keluar";
-                                html += "<label class='label label-warning'><i class='fa fa-info'></i> Waiting List</label>";
+                                html += "<label class='label label-warning'>Waiting List</label>";
                             }else{
-                                NoSrt = "<b>"+iData['NoSurat']+"</b>";
-                                html += "<label class='label label-success'><i class='fa fa-check'></i> Terbit</label>";
+                                html += "<label class='label label-success'>Terarsip</label>";
                             }
                         html += "</td>";
-                            html += "<td>";
-                                html += NoSrt+"<br><small>Author Request : <b>"+iData['Authorss']+"</b></small><br><small>Direktorat Request : <b>"+iData['DirektoratText']+"</b></small>";
-                            html += "</td>";
                         html += "<td class='text-center'><div class='btn-group'>";
-                            if(iData['Status'] == "0"){
-                                <?php if($this->session->userdata('KodeLevel') != 2){ ?>
-                                    html += "<a href='<?= base_url() ?>request_surat/approve/"+iData['Id']+"' class='btn btn-success btn-xs' data-toggle='tooltip' title='tambah nomor surat'><i class='fa fa-plus-square'></i></a>";
+                                if(iData['Status'] != "0"){
+                                    html += "<a target='_blank' href='<?= base_url() ?>load_data/surat_keluar/"+iData['Id']+"' class='btn btn-success btn-xs' data-toggle='tooltip' title='lihat surat'><i class='fa fa-file'></i></a>";
+                                }
+                                <?php if($this->session->userdata('KodeLevel') != "2"){ ?>
+                                    html += "<a href='<?= base_url() ?>surat_keluar/edit/"+iData['Id']+"' class='btn btn-primary btn-xs' data-toggle='tooltip' title='ubah data'><i class='fa fa-edit'></i></a><a href='javascript:void(0)' onclick=\"HapusData('"+iData['Id']+"')\"  class='btn btn-danger btn-xs' data-toggle='tooltip' title='hapus data'><i class='fa fa-trash-o'></i></a>";
                                 <?php } ?>
-                                html += "<a href='<?= base_url() ?>request_surat/edit/"+iData['Id']+"' class='btn btn-primary btn-xs' data-toggle='tooltip' title='ubah data'><i class='fa fa-edit'></i></a><a href='javascript:void(0)' onclick=\"HapusData('"+iData['Id']+"')\"  class='btn btn-danger btn-xs' data-toggle='tooltip' title='hapus data'><i class='fa fa-trash-o'></i></a>";
-                                
-                            }else{
-                                html += "-";
-                                
-                            }
                         html += "</div></td>";
                     html += "</tr>";
                     No++;
@@ -161,7 +165,7 @@ function LoadData(page){
                 pagination(page, res['jumlah_page']);
                 StopLoad();
             }else{
-                $("#ShowData").html("<tr><td class='text-center' colspan='6'>no data availible in table</td></tr>");
+                $("#ShowData").html("<tr><td class='text-center' colspan='7'>no data availible in table</td></tr>");
                 StopLoad();
             }
         },
@@ -222,18 +226,12 @@ $("#FormDataUpdate").submit(function(e){
     SubmitDataUpdate();
 })
 
-$("#FormDataApprove").submit(function(e){
-    e.preventDefault();
-    SubmitDataAprove();
-})
-
-
 function Validasi(){
-    var iForm = ["Kepada","Perihal","TglSurat"];
-    var iKet = ["Kepada belum lengkap!","Perihal belum lengkap","Tanggal surat belum dipilih"];
+    var iForm = ["Kepada","Perihal","TglSurat","KodeJenisSurat","File"];
+    var iKet = ["Kepada belum lengkap!","Perihal belum lengkap","Tanggal surat belum dipilih","Kode jenis belum dipilih","File belum dipilih"];
     for(i=0; i < iForm.length; i++){
         if($("#"+iForm[i]).val() == ""){
-            Customerror("REQ-SURAT", "001", iKet[i],"proses");
+            Customerror("SRT-KLR", "001", iKet[i],"proses");
             scrolltop();
             $("#"+iForm[i]).focus();
             return false;
@@ -241,58 +239,16 @@ function Validasi(){
     }
 }
 
-function Validasi(){
-    var iForm = ["Kepada","Perihal","TglSurat"];
-    var iKet = ["Kepada belum lengkap!","Perihal belum lengkap","Tanggal surat belum dipilih"];
+function ValidasiUpdate(){
+    var iForm = ["Kepada","Perihal","TglSurat","KodeJenisSurat"];
+    var iKet = ["Kepada belum lengkap!","Perihal belum lengkap","Tanggal surat belum dipilih","Kode jenis belum dipilih"];
     for(i=0; i < iForm.length; i++){
         if($("#"+iForm[i]).val() == ""){
-            Customerror("REQ-SURAT", "001", iKet[i],"proses");
+            Customerror("SRT-KLR", "001", iKet[i],"proses");
             scrolltop();
             $("#"+iForm[i]).focus();
             return false;
         }
-    }
-}
-
-function ValidasiAprove(){
-    var iForm = ["Kepada","Perihal","TglSurat","KodeJenisSurat","NoSurat"];
-    var iKet = ["Kepada belum lengkap!","Perihal belum lengkap","Tanggal surat belum dipilih","Jenis surat belum dipilih","Nomor surat belum dipilih"];
-    for(i=0; i < iForm.length; i++){
-        if($("#"+iForm[i]).val() == ""){
-            Customerror("REQ-SURAT", "001", iKet[i],"proses");
-            scrolltop();
-            $("#"+iForm[i]).focus();
-            return false;
-        }
-    }
-}
-
-function SubmitDataAprove(){
-    if(ValidasiAprove() != false){
-        var iData = $("#FormDataApprove").serialize();
-        $.ajax({
-            type : "POST",
-            url : "<?= base_url('request_surat/save_approve/') ?>",
-            data : iData,
-            success: function(res){
-                var r = JSON.parse(res);
-                if(r['status'] == "sukses"){
-                    Customsukses("REQ-SURAT", "001", r['pesan'], "proses");
-                    setTimeout(function(){
-                        window.location.href = "<?= base_url('request_surat/index') ?>";
-                    },1000);
-                    scrolltop();
-                    
-                }else{
-                    Customerror("REQ-SURAT", "001", r['pesan'], "proses");
-                    scrolltop();
-                }
-
-            },
-            error: function(er){
-                console.log(er);
-            }
-        })
     }
 }
 
@@ -301,23 +257,27 @@ function Clear(){
 }
 
 function SubmitDataUpdate(){
-    if(Validasi() != false){
-        var iData = $("#FormDataUpdate").serialize();
+    if(ValidasiUpdate() != false){
+        var iData = new FormData($("#FormDataUpdate")[0]);
         $.ajax({
             type : "POST",
-            url : "<?= base_url('request_surat/update/') ?>",
+            url : "<?= base_url('surat_keluar/update/') ?>",
+            processData : false,
+			contentType : false,
+			chace : false,
             data : iData,
             success: function(res){
                 var r = JSON.parse(res);
                 if(r['status'] == "sukses"){
-                    Customsukses("REQ-SURAT", "001", r['pesan'], "proses");
+                    Customsukses("SRT-KLR", "001", r['pesan'], "proses");
                     setTimeout(function(){
                         $("#proses").html("");
-                    },1000);
+                        location.reload();
+                    },3000);
                     scrolltop();
                     
                 }else{
-                    Customerror("REQ-SURAT", "001", r['pesan'], "proses");
+                    Customerror("SRT-KLR", "001", r['pesan'], "proses");
                     scrolltop();
                 }
 
@@ -331,22 +291,25 @@ function SubmitDataUpdate(){
 
 function SubmitData(){
     if(Validasi() != false){
-        var iData = $("#FormData").serialize();
+        var iData = new FormData($("#FormData")[0]);
         $.ajax({
             type : "POST",
-            url : "<?= base_url('request_surat/save/') ?>",
+            url : "<?= base_url('surat_keluar/save/') ?>",
+            processData : false,
+			contentType : false,
+			chace : false,
             data : iData,
             success: function(res){
                 var r = JSON.parse(res);
+                console.log(r);
                 if(r['status'] == "sukses"){
-                    Customsukses("REQ-SURAT", "001", r['pesan'], "proses");
+                    Customsukses("SRT-KLR", "001", r['pesan'], "proses");
                     scrolltop();
                     Clear();
                 }else{
-                    Customerror("REQ-SURAT", "001", r['pesan'], "proses");
+                    Customerror("SRT-KLR", "001", r['pesan'], "proses");
                     scrolltop();
                 }
-
             },
             error: function(er){
                 console.log(er);
@@ -366,18 +329,18 @@ function SubmitDelete(){
     var iData = $("#FormDelete").serialize();
     $.ajax({
         type : "POST",
-        url : "<?= base_url('request_surat/delete/') ?>",
+        url : "<?= base_url('surat_keluar/delete/') ?>",
         data : iData,
         success: function(res){
             var r = JSON.parse(res);
             console.log(r);
             if(r['status'] == "sukses"){
-                Customsukses("REQ-SURAT", "001", r['pesan'], "proses");
+                Customsukses("SRT-KLR", "001", r['pesan'], "proses");
                 LoadData();
                 scrolltop();
                 ClearModal();
             }else{
-                Customerror("REQ-SURAT", "001", r['pesan'], "proses");
+                Customerror("SRT-KLR", "001", r['pesan'], "proses");
                 scrolltop();
                 ClearModal();
             }

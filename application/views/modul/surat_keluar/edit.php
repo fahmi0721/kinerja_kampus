@@ -4,13 +4,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Modul Request Nomor Surat
-        <small>Ubah Request Nomor Surat</small>
+        Modul Surat Keluar
+        <small>Surat Keluar</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?= base_url() ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="<?= base_url('request_surat/index/') ?>"><i class="fa fa-users"></i> Detail Request Nomor Surat</a></li>
-        <li class="active">Ubah Request Nomor Surat</li>
+        <li><a href="<?= base_url('surat_keluar/index/') ?>"><i class="fa fa-users"></i> Detail Surat Keluar</a></li>
+        <li class="active">Surat Keluar</li>
 
       </ol>
     </section>
@@ -21,18 +21,18 @@
       <!-- Default box -->
       <div class="box box-danger">
         <div class="box-header with-border">
-          <h3 class="box-title">Ubah Request Nomor Surat</h3>
+          <h3 class="box-title">Surat Keluar</h3>
 
           <div class="box-tools pull-right">
             <div class='btn-group' id='BtnControl'>
-                <a href="<?= base_url('request_surat/index/'); ?>" class='btn btn-sm btn-danger' title='Kembali' data-toggle='tooltip'><i class='fa fa-mail-reply'></i> Kembali</a>
+                <a href="<?= base_url('surat_keluar/index/'); ?>" class='btn btn-sm btn-danger' title='Kembali' data-toggle='tooltip'><i class='fa fa-mail-reply'></i> Kembali</a>
             </div>
           </div>
         </div>
         <div class="box-body">
             <div class="col-sm-12"><div class="row"><div id="proses"></div></div></div>
             <form id="FormDataUpdate" class="form-horizontal" action="#">
-                <input type='hidden' name='Id' value="<?= $data->Id ?>">
+                <input type='hidden'  name='Id' value="<?= $data->Id ?>">
                 <div class='row'>
                     <div class='col-sm-3 col-md-4'>
                         <small>Catatan:
@@ -48,21 +48,48 @@
                                 <label class="control-label">Kepada<span class='text-danger'>*</span></label>
                                 <div class='input-group'>
                                     <span class='input-group-addon'><i class='fa fa-user'></i></span>
-                                    <input class='form-control FormInput' value="<?= $data->Kepada; ?>" type='text' autocomplete='off' placeholder='Kepada' name='Kepada' id='Kepada'>
+                                    <input class='form-control FormInput' value="<?= $data->Kepada ?>" type='text' autocomplete='off' placeholder='Kepada' name='Kepada' id='Kepada'>
                                 </div>
                             </div>
                             <div class='col-sm-6'>
                               <label class="control-label">Perihal<span class='text-danger'>*</span></label>
-                              <input class='form-control FormInput' value="<?= $data->Perihal; ?>" type='text' autocomplete='off' placeholder='Perihal' name='Perihal' id='Perihal'>
+                              <input class='form-control FormInput' value="<?= $data->Perihal ?>" type='text' autocomplete='off' placeholder='Perihal' name='Perihal' id='Perihal'>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class='col-sm-6'>
                                 <label class="control-label">Tanggal<span class='text-danger'>*</span></label>
                                 <div class='input-group'>
-                                    <input class='form-control FormInput' value="<?= $data->TglSurat; ?>" type='text' autocomplete='off' placeholder='Tanggal Surat' name='TglSurat' id='TglSurat'>
+                                    <input class='form-control FormInput' value="<?= $data->TglSurat ?>" type='text' autocomplete='off' placeholder='Tanggal Surat' name='TglSurat' id='TglSurat'>
                                     <span class='input-group-addon'><i class='fa fa-calendar'></i></span>
                                 </div>
+                            </div>
+
+                            <div class='col-sm-6'>
+                                <label class="control-label">Nomor Surat<span class='text-danger'>*</span></label>
+                                <div class='input-group'>
+                                    <span class='input-group-addon'><i class='fa fa-key'></i></span>
+                                    <input class='form-control FormInput' readonly value="<?= $data->NoSurat ?>" readonly  type='text' autocomplete='off' placeholder='Nomor Surat' name='NoSurat' id='NoSurat'>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class='col-sm-6'>
+                                <label class="control-label">File</label>
+                                <div class='input-group'>
+                                    <input class='form-control FormInput' accept='.pdf' type='file' autocomplete='off' placeholder='File' name='File' id='File'>
+                                    <span class='input-group-addon'><i class='fa fa-file'></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class='col-sm-12'>
+                                <label class="control-label">Keterangan</label>
+                                <textarea class='form-control FormInput' name='Keterangan' id='Keterangan' rows='5' placeholder=''><?= $data->Keterangan ?></textarea>
                             </div>
                         </div>
                         
@@ -81,4 +108,4 @@
       </div>
     </section>
   </div>
-  <?php $this->load->view('modul/request_surat/js'); ?>
+  <?php $this->load->view('modul/surat_keluar/js'); ?>

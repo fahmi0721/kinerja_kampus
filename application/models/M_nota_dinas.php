@@ -47,6 +47,27 @@ class M_nota_dinas extends CI_Model {
         
     }
 
+    function getNomorSuratSdm($tahun,$iKode){
+        $bulanNow = date("m");
+        $this->db->select('NoSurat');
+        $this->db->where('KodeDari', $iKode);
+        $this->db->where("DATE_FORMAT(TglSurat,'%Y')", $tahun);
+        $this->db->order_by('Id','DESC');
+        $r = $this->db->get('e_office_nota_dinas')->row();
+        if(!empty($r->NoSurat)){
+            $NomorSurat = $r->NoSurat;
+            $PisahSlash = explode("/",$NomorSurat);
+            $PisahTitik = explode(".",$PisahSlash[0]);
+            $NomorNota = intval($PisahTitik[1])+1;
+            $Nomor = "ND.".$NomorNota."/".sprintf("%02d",$bulanNow)."/".$iKode."-".$tahun;
+            return $Nomor;
+        }else{
+            $Nomor = "ND.1/".sprintf("%02d",$bulanNow)."/".$iKode."-".$tahun;
+            return $Nomor;
+        }
+        
+    }
+
     function save_data($data){
         $insert = $this->db->insert("e_office_nota_dinas", $data);
         if($insert){ return true; }else{ return false;}   

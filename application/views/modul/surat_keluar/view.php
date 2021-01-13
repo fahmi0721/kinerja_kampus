@@ -4,12 +4,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Modul Nota Dinas
-        <small>Data Nota Dinas</small>
+        Modul Surat Keluar
+        <small>Data Surat Keluar</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?= base_url() ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Data Nota Dinas</li>
+        <li class="active">Data Surat Keluar</li>
       </ol>
     </section>
 
@@ -19,14 +19,13 @@
       <!-- Default box -->
       <div class="box box-danger">
         <div class="box-header with-border">
-          <h3 class="box-title">Data Nota Dinas</h3>
+          <h3 class="box-title">Data Surat Keluar</h3>
 
           <div class="box-tools pull-right">
             <div class='btn-group' id='BtnControl'>
-              <?php if($this->session->userdata('KodeLevel') != 2){ ?>
-                <a href="<?= base_url('nota_dinas/tambah_khusus/'); ?>" class='btn btn-sm btn-info btn-flat' title='Tambah Data Khusus' data-toggle='tooltip'><i class='fa fa-plus'></i> Tambah Khusus</a>
-              <?php } ?>
-                <a href="<?= base_url('nota_dinas/tambah/'); ?>" class='btn btn-sm btn-primary' title='Tambah Data' data-toggle='tooltip'><i class='fa fa-plus'></i> Tambah</a>
+                <?php if($this->session->userdata('KodeLevel') != '2'){ ?>
+                <a href="<?= base_url('surat_keluar/tambah/'); ?>" class='btn btn-sm btn-primary' title='Tambah Data' data-toggle='tooltip'><i class='fa fa-plus'></i> Tambah</a>
+                <? } ?>
                 <button class='btn btn-sm btn-warning btn-flat' onclick="location.reload();" title='Reload' data-toggle='tooltip'><i class='fa fa-refresh'></i></button>
             </div>
           </div>
@@ -49,9 +48,10 @@
                         <select class='form-control' name='By' onchange="LoadData()">
                           <option value="NoSurat">No Surat</option>
                           <option value="Perihal">Perihal</option>
+                          <option value="Kepada">Kepada</option>
                         </select>
                         <span class='input-group-addon'>#</span>
-                        <input type='text' name='Search' onkeyup="LoadData()" class='form-control' autocomplete='off' placeholder='Entri data' />
+                        <input type='text' name='Search' onkeyup="LoadData()" class='form-control' autocomplete='off' placeholder='Entri pencarian' />
                         <span class='input-group-addon'><i class='fa fa-search'></i></span>
                     </div>
                 </div>
@@ -64,14 +64,11 @@
                     <thead>
                         <tr>
                             <th width='10px' class='text-center'>No</th>
-                            <th>No Dokumen</th>
-                            <th>Nota Dinas</th>
-                            <th>Di Tujukan</th>
-                            <?php if($this->session->userdata('KodeLevel') != 2){ ?>
-                            <th>Dari</th>
+                            <th>Dokumen</th>
+                            <th>Tanggal</th>
+                            <th>Uraian</th>
                             <th>Authors</th>
-                            <?php } ?>
-                            <th>File</th>
+                            <th width='10%'>Status Arsip</th>
                             <th width='10%' class='text-center'>Aksi</th>
                         </tr>
                     </thead>
@@ -117,4 +114,4 @@
 </div>
 </div>
 </div>
-<?php $this->load->view('modul/nota_dinas/js'); ?>
+<?php $this->load->view('modul/surat_keluar/js'); ?>

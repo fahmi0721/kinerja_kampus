@@ -1,41 +1,32 @@
 <?php
-class M_request_surat extends CI_Model {
+class M_surat_keluar extends CI_Model {
 
     public function __construct(){
         parent::__construct();
 	}
 
     function show_data($number,$offset,$Search,$By){
-        $this->db->select("DATE_FORMAT(TglApprove,'%Y-%m-%d') as TglApprove,Id,NoDokumen,TglSurat,Perihal,Authorss,Status,Direktorat,Kepada,DirektoratText,NoSurat");
+        $this->db->select("*, DATE_FORMAT(TglCreateApp,'%Y-%m-%d') as TglCreateApp");
         $this->db->like($By, $Search); 
-        $this->db->order_by("Status ASC, Id DESC"); 
-        if($this->session->userdata('KodeLevel') == 2){
-            $KodeDir = $this->session->userdata('KodeDirektorat');
-            $this->db->where("Direktorat", $KodeDir);
-        }
+        $this->db->order_by("Id", "DESC"); 
         $data=array();
-        return $query = $this->db->get('e_office_request_surat',$number,$offset)->result();
-    }
-
-    function save_data($data){
-        return $this->db->insert("e_office_request_surat", $data);
+        return $query = $this->db->get('e_office_surat_keluar',$number,$offset)->result();
     }
 
     function jumlah_data(){
-        if($this->session->userdata('KodeLevel') == 2){
-            $KodeDir = $this->session->userdata('KodeDirektorat');
-            $this->db->where("Direktorat", $KodeDir);
-        }
-        return $query = $this->db->get('e_office_request_surat')->num_rows();
+        return $query = $this->db->get('e_office_surat_keluar')->num_rows();
     }
 
     function get_data($Id){
-        return $query = $this->db->get_where('e_office_request_surat', array('Id' => $Id))->result()[0];
-    }
-
-    function get_data_sk($Id){
         return $query = $this->db->get_where('e_office_surat_keluar', array('Id' => $Id))->result()[0];
     }
+
+    function get_file($Id){
+        $this->db->select("File");
+        return $query = $this->db->get_where('e_office_surat_keluar', array('Id' => $Id))->row();
+    }
+
+   
 
     function get_jenis(){
         $this->db->select("Kode, Jenis");
@@ -78,19 +69,24 @@ class M_request_surat extends CI_Model {
 
     function update_data($data,$Id){
         $this->db->where('Id', $Id);
-        $update = $this->db->update('e_office_request_surat', $data);
+        $update = $this->db->update('e_office_surat_keluar', $data);
         if($update){ return true; }else{ return false;}   
+    }
+
+    function update_data_rq($data,$NoSurat){
+        $this->db->where('NoSurat', $NoSurat);
+        $update = $this->db->update('e_office_request_surat', $data);
+        if($update){ return true; }else{ return false; }   
     }
 
     function hapus_data($Id){
         $this->db->where('Id', $Id);
-        $delete = $this->db->delete('e_office_request_surat');
+        $delete = $this->db->delete('e_office_surat_keluar');
         if($delete){ return true; }else{ return false;}
     }
 
-    function save_data_approve($data){
-        $this->db->insert("e_office_surat_keluar", $data);
-        return $this->db->insert_id();
+    function save_data($data){
+        return $this->db->insert("e_office_surat_keluar", $data);
     }
     
 

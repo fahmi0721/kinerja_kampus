@@ -36,6 +36,7 @@
             <form id="FormDataDisposisiUpdate" class="form-horizontal" action="#">
                 <input value='<?= $data->Id; ?>'  class='form-control' type='hidden'  name='Id'>
                 <input value='<?= $data->NoDokumen; ?>'  class='form-control' type='hidden'  name='NoDokumen'>
+                <input value='<?= $IdNotaDinas; ?>'  class='form-control' type='hidden'  name='IdNotaDinas'>
                 <div class='row'>
                     <div class='col-sm-3 col-md-4'>
                         <small>Catatan:
