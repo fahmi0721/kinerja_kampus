@@ -114,4 +114,5 @@
 </div>
 </div>
 </div>
+
 <?php $this->load->view('modul/surat_keluar/js'); ?>
