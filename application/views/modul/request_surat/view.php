@@ -49,7 +49,7 @@
                           <option value="Kepada">Kepada</option>
                         </select>
                         <span class='input-group-addon'>#</span>
-                        <input type='text' name='Search' onkeyup="LoadData()" class='form-control' autocomplete='off' placeholder='Entri username atau nama' />
+                        <input type='text' name='Search' onkeyup="LoadData()" class='form-control' autocomplete='off' placeholder='Entri pencarian' />
                         <span class='input-group-addon'><i class='fa fa-search'></i></span>
                     </div>
                 </div>
@@ -64,10 +64,8 @@
                             <th width='10px' class='text-center'>No</th>
                             <th>Dokumen</th>
                             <th>Tanggal</th>
-                            <th>Status</th>
-                            <?php if($this->session->userdata('KodeLevel') != "2"){ ?>
-                            <th>Keterangan</th>
-                            <?php } ?>
+                            <th width='10%'>Status</th>
+                            <th>No Surat</th>
                             <th width='10%' class='text-center'>Aksi</th>
                         </tr>
                     </thead>
