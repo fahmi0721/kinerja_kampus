@@ -23,13 +23,25 @@ class Main extends CI_Controller {
 			parent::__construct();
 			$this->load->helper('url'); 
 			$this->load->model('m_auth');
+			$this->load->model('m_dashboard',"md");
 			$this->m_auth->cek_login();
 	}
 	public function index()
 	{
 		$this->load->view('_template/header');
 		$this->load->view('_template/sidebar');
-		$this->load->view('main');
+		if($this->session->userdata('KodeLevel') == '2'){
+			$KodeDirektorat = $this->session->userdata('KodeDirektorat');
+			$data['rq_surat'] = $this->md->load_request_surat_today_by_user($KodeDirektorat);
+			$data['sm'] = $this->md->jumlah_sm();
+			$data['nd'] = $this->md->jumlah_nd();
+			$data['sk'] = $this->md->jumlah_sk();
+			$data['rq'] = $this->md->jumlah_rq();
+			$this->load->view('dashboard/pelaksana',$data);
+		}else{
+			$this->load->view('main');
+		}
+		
 		$this->load->view('_template/footer');
 	}
 

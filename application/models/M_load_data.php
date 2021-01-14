@@ -21,6 +21,11 @@ class M_load_data extends CI_Model {
         return $query = $this->db->get_where('e_office_surat_masuk', array('Id' => $Id))->row();
     }
 
+    function get_surat_keluar($Id){
+        $this->db->select("File");
+        return $query = $this->db->get_where('e_office_surat_keluar', array('Id' => $Id))->row();
+    }
+
     
 
     

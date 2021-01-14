@@ -13,7 +13,7 @@ class M_auth extends CI_Model {
     function cek_hak_akses($modul){
         $data[0] = array();
         $data[1] = array("users","jenis_surat","klasifikasi");
-        $data[2] = array("users","jenis_surat","klasifikasi","disposisi_notadinas","disposisi_suratmasuk","tambah_surat_masuk",'edit_surat_masuk','hapus_surat_masuk');
+        $data[2] = array("users","jenis_surat","klasifikasi","disposisi_notadinas","disposisi_suratmasuk","tambah_surat_masuk",'edit_surat_masuk','hapus_surat_masuk','approve_request_surat',"surat_keluar_up");
         $Level = $this->session->userdata('KodeLevel');
         if(in_array($modul,$data[$Level])){
             redirect("page_404");

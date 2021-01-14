@@ -23,6 +23,9 @@
 
           <div class="box-tools pull-right">
             <div class='btn-group' id='BtnControl'>
+              <?php if($this->session->userdata('KodeLevel') != 2){ ?>
+                <a href="<?= base_url('nota_dinas/tambah_khusus/'); ?>" class='btn btn-sm btn-info btn-flat' title='Tambah Data Khusus' data-toggle='tooltip'><i class='fa fa-plus'></i> Tambah Khusus</a>
+              <?php } ?>
                 <a href="<?= base_url('nota_dinas/tambah/'); ?>" class='btn btn-sm btn-primary' title='Tambah Data' data-toggle='tooltip'><i class='fa fa-plus'></i> Tambah</a>
                 <button class='btn btn-sm btn-warning btn-flat' onclick="location.reload();" title='Reload' data-toggle='tooltip'><i class='fa fa-refresh'></i></button>
             </div>

@@ -29,9 +29,19 @@ class Nota_dinas extends CI_Controller {
 	}
 		
 	public function index(){
+		
 		$this->load->view('_template/header');
 		$this->load->view('_template/sidebar');
 		$this->load->view('modul/nota_dinas/view');
+		$this->load->view('_template/footer');
+	}
+
+	public function tambah_khusus(){
+		$data['tahun'] = $this->LoadTahun();
+		$data['kepada'] = $this->m_nota_dinas->getMaster();
+		$this->load->view('_template/header');
+		$this->load->view('_template/sidebar');
+		$this->load->view('modul/nota_dinas_sdm/tambah',$data);
 		$this->load->view('_template/footer');
 	}
 
@@ -59,6 +69,18 @@ class Nota_dinas extends CI_Controller {
 		return $thun;
 	}
 
+	public function get_nomor_surat_sdm(){
+		
+		if(!empty($this->input->post('Tahun')) && !empty($this->input->post('Dari'))){
+			$Kode = $this->input->post('Dari');
+			$Kode = explode("#",$Kode);
+			$Kode = $Kode[0];
+			$Tahun = $this->input->post('Tahun');
+			echo $this->m_nota_dinas->getNomorSuratSdm($Tahun,$Kode);
+		}else{
+			echo "";
+		}
+	}
 
 	public function get_nomor_surat(){
 		if(!empty($this->input->post('Tahun'))){
@@ -67,8 +89,6 @@ class Nota_dinas extends CI_Controller {
 		}else{
 			echo $this->m_nota_dinas->getNomorSurat(date("Y"));
 		}
-		
-		
 	}
 
 	public function tambah(){
@@ -129,6 +149,77 @@ class Nota_dinas extends CI_Controller {
 				$data['Direktorat'] = $this->session->userdata('KodeDirektorat');
 				$data['Keterangan'] = $this->input->post('Keterangan');
 				$data['KodeDari'] = $iKode;
+				$data['TglCreate'] = date("Y-m-d H:i:s");
+				$DuplicateData = $this->m_nota_dinas->cek_duplicate($data['NoSurat']);
+				if($DuplicateData <= 0){
+					$save = $this->m_nota_dinas->save_data($data);
+					$r['status'] = "sukses";
+					$r['pesan'] = "Data nota dinas dengan nomor surat ".$data['NoSurat']." berhasil di masukkan kedalam sistem";
+					
+					/** UPDATE LOGS */
+					$logs['Authorss'] = $this->session->userdata('Nama');
+					$logs['Pesan'] = $r['pesan'];
+					$logs['Modul'] = "NotaDinas";
+					$logs['Type'] = "success";
+					$logs['Tgl'] = date("Y-m-d H:i:s");
+					$this->m_logs->save_logs($logs);					
+					echo json_encode($r);
+				}else{
+					$r['status'] = "gagal";
+					$r['pesan'] = "Data nota diasn dengan nama : ".$data['NoSurat']." telah tersedia dalam sistem. silahkan masukkan kode yang lain";
+					/** UPDATE LOGS */
+					$logs['Authorss'] = $this->session->userdata('Nama');
+					$logs['Pesan'] = $r['pesan'];
+					$logs['Modul'] = "NotaDinas";
+					$logs['Type'] = "error";
+					$logs['Tgl'] = date("Y-m-d H:i:s");
+					$this->m_logs->save_logs($logs);
+					echo json_encode($r);
+				}
+			} catch (PDOException $e) {
+				$r['status'] = "gagal";
+				$r['pesan'] = "System Error : ".$e->getMessage();
+				/** UPDATE LOGS */
+				$logs['Authorss'] = $this->session->userdata('Nama');
+				$logs['Pesan'] = $r['pesan'];
+				$logs['Modul'] = "NotaDinas";
+				$logs['Type'] = "error";
+				$logs['Tgl'] = date("Y-m-d H:i:s");
+				$this->m_logs->save_logs($logs);
+				echo json_encode($r);
+			}
+		}else{
+			$r['status'] = "error";
+			$r['pesan'] = $upl['error'];
+			$logs['Authorss'] = $this->session->userdata('Nama');
+			$logs['Pesan'] = $upl['error'];
+			$logs['Modul'] = "NotaDinas";
+			$logs['Type'] = "error";
+			$logs['Tgl'] = date("Y-m-d H:i:s");
+			$this->m_logs->save_logs($logs);
+			echo json_encode($r);
+		}
+	}
+
+	public function save_sdm(){
+		$r = array();
+		$newName = time();
+		$upl = $this->upload_file($newName);
+		if($upl['status'] == "sukses"){
+			try {
+				$iKode = explode("#",$this->input->post('Dari'));
+				$FileName = $upl['data']['file_name'];
+				$data['Dari'] = $iKode[1];
+				$data['NoDokumen'] = $iKode[0]."-".date("Ymd")."-".date("His");
+				$data['TglSurat'] = $this->input->post('TglSurat');
+				$data['FileSurat'] = $FileName;
+				$data['Kepada'] = $this->input->post('Kepada');
+				$data['NoSurat'] = $this->input->post('NoSurat');
+				$data['Perihal'] = $this->input->post('Perihal');
+				$data['Authorss'] = $this->input->post('Authorss');
+				$data['Direktorat'] = $this->session->userdata('KodeDirektorat');
+				$data['Keterangan'] = $this->input->post('Keterangan');
+				$data['KodeDari'] = $iKode[0];
 				$data['TglCreate'] = date("Y-m-d H:i:s");
 				$DuplicateData = $this->m_nota_dinas->cek_duplicate($data['NoSurat']);
 				if($DuplicateData <= 0){
@@ -282,7 +373,7 @@ class Nota_dinas extends CI_Controller {
 			echo json_encode($result);
 		}
 	}
-
+	/** DISPOSISI */
 	public function tambah_disposisi(){
 		$this->m_auth->cek_hak_akses('disposisi_notadinas');
 		$Id = $this->uri->segment(3);
@@ -295,7 +386,7 @@ class Nota_dinas extends CI_Controller {
 		
 	}
 
-	/** DISPOSISI */
+
 
 	private function upload_file_disposisi($new_name){
 		$config['upload_path']          = './public/file/disposisi';
