@@ -18,7 +18,7 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 /public/file/disposisi/*
 /public/file/nota_dinas/*
 /public/file/surat_masuk/*
-/public/file/surat_keluar/*
+#/public/file/surat_keluar/*
 /application/config/config.php
 /aplication/config/database.php
 # IDE Files
