@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://10.29.22.3/e-office/';
+$config['base_url'] = 'http://app.intansejahterautama.co.id/e-office/';
 
 /*
 |--------------------------------------------------------------------------

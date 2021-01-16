@@ -8,12 +8,13 @@ class M_surat_keluar extends CI_Model {
     function show_data($number,$offset,$Search,$By){
         $this->db->select("*, DATE_FORMAT(TglCreateApp,'%Y-%m-%d') as TglCreateApp");
         $this->db->like($By, $Search); 
-        $this->db->order_by("Id", "DESC"); 
+        $this->db->order_by("Id DESC , LEFT(NoSurat,1) DESC"); 
         $data=array();
         return $query = $this->db->get('e_office_surat_keluar',$number,$offset)->result();
     }
 
-    function jumlah_data(){
+    function jumlah_data($Search,$By){
+        $this->db->like($By, $Search); 
         return $query = $this->db->get('e_office_surat_keluar')->num_rows();
     }
 
