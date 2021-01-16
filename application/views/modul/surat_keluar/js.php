@@ -254,6 +254,9 @@ function ValidasiUpdate(){
 
 function Clear(){
     $(".FormInput").val("");
+    $("#KodeJenisSurat").val(null);
+    $(".select-jenis").trigger("change");
+
 }
 
 function SubmitDataUpdate(){

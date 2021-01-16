@@ -19,7 +19,7 @@
         <?php $aktif = $this->uri->segment(1) == "nota_dinas" ? "class='active'" : ""; ?>
         <li><a href="<?= base_url('nota_dinas/index') ?>"><i class="fa fa-book"></i> <span>Nota Dinas</span></a></li>
         <?php $aktif = $this->uri->segment(1) == "surat_masuk" ? "class='active'" : ""; ?>
-        <li><a href="<?= base_url('surat_keluar/index') ?>"><i class="fa fa-file"></i> <span>Surat Masuk</span></a></li>
+        <li><a href="<?= base_url('surat_masuk/index') ?>"><i class="fa fa-file"></i> <span>Surat Masuk</span></a></li>
         <?php $aktif = $this->uri->segment(1) == "surat_keluar" ? "class='active'" : ""; ?>
         <li><a href="<?= base_url('surat_keluar/index') ?>"><i class="fa fa-file"></i> <span>Surat Keluar</span></a></li>
         <!-- <li class="treeview">

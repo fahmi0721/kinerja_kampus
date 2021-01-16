@@ -36,11 +36,12 @@ class Surat_keluar extends CI_Controller {
 	}
 
 	public function show_data(){
-		$JumRow = $this->m_surat_keluar->jumlah_data();
+		
 		$RowPage = $this->input->post('Row');
 		$By = $this->input->post('By');
 		$Page = $this->input->post('Page');
 		$Search = $this->input->post('Search');
+		$JumRow = $this->m_surat_keluar->jumlah_data($Search,$By);
 		$offset=($Page - 1) * $RowPage;
 		$JumPage = ceil($JumRow/$RowPage);
 		$data['data'] = $this->m_surat_keluar->show_data($RowPage,$offset,$Search,$By);
@@ -110,6 +111,7 @@ class Surat_keluar extends CI_Controller {
 			$data['NoDokumen'] = "SK-".date("Ymd")."-".date("His");
 			$data['Perihal'] = $this->input->post('Perihal');
 			$data['NoSurat'] = $this->input->post('NoSurat');
+			$data['Keterangan'] = $this->input->post('Keterangan');
 			$data['Status'] = '1';
 			$data['Authorss'] = $this->session->userdata('Nama');
 			$data['AuthorssApp'] = $this->session->userdata('Nama');
