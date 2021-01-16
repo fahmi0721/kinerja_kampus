@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>E-OFFiCE<?=  ": ". ucfirst($this->uri->segment(1)) ?></title>
+  <title>E-OFFICE : PT INTAN SEJAHTERA UTAMA</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="<?= base_url('public/css/bootstrap.min.css') ?>">
   <link rel="stylesheet" href="<?= base_url('public/css/font-awesome.min.css') ?>">
