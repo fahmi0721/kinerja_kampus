@@ -21,6 +21,8 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 /public/file/surat_keluar/*
 /application/config/config.php
 /aplication/config/database.php
+
+
 # IDE Files
 #-------------------------
 /nbproject/
