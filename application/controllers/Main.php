@@ -30,18 +30,26 @@ class Main extends CI_Controller {
 	{
 		$this->load->view('_template/header');
 		$this->load->view('_template/sidebar');
-		// if($this->session->userdata('KodeLevel') == '2'){
-		// 	$KodeDirektorat = $this->session->userdata('KodeDirektorat');
-		// 	$data['rq_surat'] = $this->md->load_request_surat_today_by_user($KodeDirektorat);
-		// 	$data['sm'] = $this->md->jumlah_sm();
-		// 	$data['nd'] = $this->md->jumlah_nd();
-		// 	$data['sk'] = $this->md->jumlah_sk();
-		// 	$data['rq'] = $this->md->jumlah_rq();
-		// 	$this->load->view('dashboard/pelaksana',$data);
-		// }else{
-		// 	$this->load->view('main');
-		// }
-			$this->load->view('main');
+		if($this->session->userdata('KodeLevel') == '2'){
+			// $KodeDirektorat = $this->session->userdata('KodeDirektorat');
+			// $data['rq_surat'] = $this->md->load_request_surat_today_by_user($KodeDirektorat);
+			// $data['sm'] = $this->md->jumlah_sm();
+			// $data['nd'] = $this->md->jumlah_nd();
+			// $data['sk'] = $this->md->jumlah_sk();
+			// $data['rq'] = $this->md->jumlah_rq();
+			// $this->load->view('dashboard/pelaksana',$data);
+			$data['sm'] = $this->md->jumlah_sm();
+			$data['sk'] = $this->md->jumlah_sk();
+			$data['rq'] = $this->md->jumlah_rq();
+			$data['nd'] = $this->md->jumlah_nd();
+			$this->load->view('main',$data);
+		}else{
+			$data['sm'] = $this->md->jumlah_sm();
+			$data['sk'] = $this->md->jumlah_sk();
+			$data['rq'] = $this->md->jumlah_rq();
+			$data['nd'] = $this->md->jumlah_nd();
+			$this->load->view('main',$data);
+		}
 		
 		
 		$this->load->view('_template/footer');
