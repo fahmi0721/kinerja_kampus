@@ -22,7 +22,6 @@ class Auth extends CI_Controller {
 			parent::__construct();
 			$this->load->helper('url'); 
 			$this->load->model('m_auth');
-			$this->load->model('m_logs');
 	}
 	public function index()
 	{
@@ -31,27 +30,19 @@ class Auth extends CI_Controller {
 
 	public function proses(){
 		$Username = $this->input->post('Username');
-		$Password = "e-office.".$this->input->post('Password');
-		if($this->m_auth->login_user($Username,$Password)){$logs['Authorss'] = $this->session->userdata('Nama');
-			$logs['Pesan'] = "User a.n ".$this->session->userdata('Nama')." berhasil masuk sistem";
-			$logs['Modul'] = "Login";
-			$logs['Type'] = "success";
-			$logs['Tgl'] = date("Y-m-d H:i:s");
-			$this->m_logs->save_logs($logs);
-			redirect('/');
+		$Password = md5("pp".$this->input->post('Password'));
+		if($this->m_auth->login_user($Username,$Password)){
+			redirect("/");
 			
 		}else{
 			$this->session->set_flashdata('error','Username / Password salah');
-			$this->m_auth->login_user($Username,$Password);
-			redirect('auth');
+			redirect("/auth");
 		}
 	}
 
 	public function logout(){
 		$this->session->unset_userdata('Username');
 		$this->session->unset_userdata('Nama');
-		$this->session->unset_userdata('Direktorat');
-		$this->session->unset_userdata('KodeDirektorat');
 		$this->session->unset_userdata('Level');
 		$this->session->unset_userdata('KodeLevel');
 		$this->session->unset_userdata('is_login');

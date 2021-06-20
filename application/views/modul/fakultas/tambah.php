@@ -4,13 +4,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Modul Users
-        <small>Tambah Users</small>
+        Modul Fakultas
+        <small>Tambah Fakultas</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?= base_url() ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="<?= base_url('jenis_surat/index/') ?>"><i class="fa fa-users"></i> Detail Data Users</a></li>
-        <li class="active">Tambah Users</li>
+        <li><a href="<?= base_url('jenis_surat/index/') ?>"><i class="fa fa-users"></i> Detail Data Fakultas</a></li>
+        <li class="active">Tambah Fakultas</li>
 
       </ol>
     </section>
@@ -21,11 +21,11 @@
       <!-- Default box -->
       <div class="box box-danger">
         <div class="box-header with-border">
-          <h3 class="box-title">Tambah Users</h3>
+          <h3 class="box-title">Tambah Fakultas</h3>
 
           <div class="box-tools pull-right">
             <div class='btn-group' id='BtnControl'>
-                <a href="<?= base_url('users/index/'); ?>" class='btn btn-sm btn-danger' title='Kembali' data-toggle='tooltip'><i class='fa fa-mail-reply'></i> Kembali</a>
+                <a href="<?= base_url('fakultas/index/'); ?>" class='btn btn-sm btn-danger' title='Kembali' data-toggle='tooltip'><i class='fa fa-mail-reply'></i> Kembali</a>
             </div>
           </div>
         </div>
@@ -45,33 +45,16 @@
                         <div class="form-group">
                             <div class='col-sm-6'>
                                 <label class="control-label">Nama<span class='text-danger'>*</span></label>
-                                <div class='input-group'>
-                                    <span class='input-group-addon'><i class='fa fa-users'></i></span>
-                                    <input class='form-control FormInput' type='text' autocomplete='off' placeholder='Nama' name='Nama' id='Nama'>
-                                </div>
-                            </div>
-                            <div class='col-sm-6'>
-                                <label class="control-label">Username<span class='text-danger'>*</span></label>
-                               <input class='form-control FormInput' type='text' autocomplete='off' placeholder='Username' name='Username' id='Username'>
+                                <input class='form-control FormInput' type='text' autocomplete='off' placeholder='Nama' name='Nama' id='Nama'>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <div class='col-sm-6'>
-                                <label class="control-label">Password<span class='text-danger'>*</span></label>
-                                <div class='input-group'>
-                                    <span class='input-group-addon'><i class='fa fa-key'></i></span>
-                                    <input class='form-control FormInput' type='text' autocomplete='off' placeholder='Password' name='Password' id='Password'>
-                                </div>
+                            <div class='col-sm-12'>
+                                <label class="control-label">Keterangan</label>
+                                <textarea class='form-control FormInput' rows="5" type='text' autocomplete='off' placeholder='Keterangan' name='Keterangan' id='Keterangan'></textarea>
                             </div>
-                            <div class='col-sm-6'>
-                                <label class="control-label">Level<span class='text-danger'>*</span></label>
-                                <select name="Level" id="Level" class='form-control FormInput'>
-                                  <option value="0">Admin</option>
-                                  <option value="1">Pemeriksa</option>
-                                  <option value="2">Admin Fakultas</option>
-                                </select>
-                            </div>
+                           
                         </div>
                         
                         
@@ -91,4 +74,4 @@
       </div>
     </section>
   </div>
-  <?php $this->load->view('modul/users/tambah_js'); ?>
+  <?php $this->load->view('modul/fakultas/tambah_js'); ?>

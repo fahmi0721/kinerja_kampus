@@ -22,7 +22,7 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Surat Masuk</span>
-              <span class="info-box-number"><?= generate_number($sm) ?></span>
+              <span class="info-box-number">0</span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -35,7 +35,7 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Surat Keluar</span>
-              <span class="info-box-number"><?= generate_number($sk) ?></span>
+              <span class="info-box-number">0</span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -48,7 +48,7 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Nota Dinas</span>
-              <span class="info-box-number"><?= generate_number($nd) ?></span>
+              <span class="info-box-number">0</span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -61,7 +61,7 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Request Surat</span>
-              <span class="info-box-number"><?= generate_number($rq) ?></span>
+              <span class="info-box-number">0</span>
             </div>
             <!-- /.info-box-content -->
           </div>
