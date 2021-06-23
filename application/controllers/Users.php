@@ -61,9 +61,10 @@ class Users extends CI_Controller {
 	}
 
 	public function tambah(){
+		$data['fakultas'] = $this->m->load_fakultas();
 		$this->load->view('_template/header');
 		$this->load->view('_template/sidebar');
-		$this->load->view('modul/users/tambah');
+		$this->load->view('modul/users/tambah', $data);
 		$this->load->view('_template/footer');
 	}
 
@@ -83,6 +84,7 @@ class Users extends CI_Controller {
 			$data['Username'] = $this->input->post('Username');
 			$data['Password'] = md5("pp".$this->input->post('Password'));
 			$data['Level'] = $this->input->post('Level');
+			$data['IdFakultas'] = $this->input->post('IdFakultas');
 			$DuplicateData = $this->m->cek_duplicate($data['Username']);
 			if($DuplicateData <= 0){
 				$save = $this->m->save_data($data);
@@ -107,6 +109,7 @@ class Users extends CI_Controller {
 			$Id = $this->input->post('Id');
 			$data['Nama'] = strtoupper($this->input->post('Nama'));
 			$data['Username'] = $this->input->post('Username');
+			$data['IdFakultas'] = $this->input->post('IdFakultas');
 			if(!empty($this->input->post('Password'))){
 				$data['Password'] = md5("pp".$this->input->post('Password'));
 			}

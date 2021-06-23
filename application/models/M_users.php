@@ -95,5 +95,15 @@ class M_users extends CI_Model {
         return $this->db->affected_rows();
     }
 
+    function load_fakultas(){
+        $data =  $this->db->get("tbl_fakultas");
+        if($data->num_rows() > 0){
+            return $data->result();
+        }else{
+            return "";
+        }
+    }
+
+
 }
 ?>

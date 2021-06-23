@@ -14,6 +14,7 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
+        <?php if($this->session->userdata('KodeLevel') == 0){ ?>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-archive"></i> <span>Mater Data</span>
@@ -26,7 +27,7 @@
             <li><a href="<?= base_url('fakultas/') ?>"><i class="fa fa-circle-o"></i> Fakultas</a></li>
           </ul>
         </li>
-
+        <?php } ?>
         <?php $aktif = $this->uri->segment(1) == "k_fakultas" ? "class='active'" : ""; ?>
         <li <?= $aktif; ?>><a href="<?= base_url('k_fakultas/') ?>"><i class="fa fa-envelope"></i> <span>K - FAKULTAS</span></a></li>
       

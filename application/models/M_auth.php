@@ -18,6 +18,8 @@ class M_auth extends CI_Model {
             $Level = array("Admin","Pemeriksa","Admin Fakultas");
             $data_user = $query->row();
             if ($password === $data_user->Password) {
+                $this->session->set_userdata('Id',$data_user->Id);
+                $this->session->set_userdata('IdFakultas',$data_user->IdFakultas);
                 $this->session->set_userdata('Username',$username);
 				$this->session->set_userdata('Nama',$data_user->Nama);
                 $this->session->set_userdata('Level',$Level[$data_user->Level]);
