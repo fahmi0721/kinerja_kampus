@@ -6,7 +6,7 @@ class M_auth extends CI_Model {
 	}
     function cek_login(){
         if(empty($this->session->userdata('is_login'))){
-			echo $this->session->userdata('KodeLevel');
+			redirect("auth/");
 		}
     }
 
