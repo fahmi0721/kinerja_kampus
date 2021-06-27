@@ -62,7 +62,7 @@
                                       echo "<td><a href='javascript:void(0)' onclick=\"UpdateNilai('".$item['Id']."')\" class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Update Nilai</a></td>";
                                     endif;
                                     echo "</tr>";
-                                    No++;
+                                    $No++;
                                 }
                             }else{
                                redirect("k_fakultas/");
