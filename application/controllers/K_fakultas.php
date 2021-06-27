@@ -40,6 +40,7 @@ class K_fakultas extends CI_Controller {
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $field) {
+			$btn = $this->session->userdata('KodeLevel') === "2" ? "<a data-toggle='tooltip' href='".base_url()."k_fakultas/edit?Periode=".$field->Periode."' title='Edit Data' class='btn btn-primary btn-xs'><i class='fa fa-edit'></i></a><a data-toggle='tooltip' href='javascript:void(0)' onclick=\"HapusData('".$field->Periode."')\" title='Hapus Data' class='btn btn-danger btn-xs'><i class='fa fa-trash'></i></a>" : "";
             $no++;
             $row = array();
 			$pisah = explode("-",$field->Periode);
@@ -47,7 +48,7 @@ class K_fakultas extends CI_Controller {
             $row[] = $no;
             $row[] = $bulan." ".$pisah[0];
             $row[] = $field->tot;
-            $row[] = "<center><span class='btn-group'><a data-toggle='tooltip' href='".base_url()."k_fakultas/detail?Periode=".$field->Periode."' title='Lihat Data' class='btn btn-success btn-xs'><i class='fa fa-eye'></i></a><a data-toggle='tooltip' href='".base_url()."k_fakultas/edit?Periode=".$field->Periode."' title='Edit Data' class='btn btn-primary btn-xs'><i class='fa fa-edit'></i></a><a data-toggle='tooltip' href='javascript:void(0)' onclick=\"HapusData('".$field->Periode."')\" title='Hapus Data' class='btn btn-danger btn-xs'><i class='fa fa-trash'></i></a></span></center>";
+            $row[] = "<center><span class='btn-group'><a data-toggle='tooltip' href='".base_url()."k_fakultas/detail?Periode=".$field->Periode."' title='Lihat Data' class='btn btn-success btn-xs'><i class='fa fa-eye'></i></a>".$btn."</span></center>";
             $data[] = $row;
         }
  
@@ -190,6 +191,37 @@ class K_fakultas extends CI_Controller {
 			$result['status'] = "sukses";
 			$result['pesan'] = "Data K-Fakultas berhasil dihapus";
 			echo json_encode($result);
+		} catch (PDOException $e) {
+			$result['status'] = "gagal";
+			$result['pesan'] = $e->getMessage();
+			echo json_encode($result);
+		}
+	}
+
+	public function load_nilai(){
+		$result = array();
+		try {
+			$Id = $this->input->post('Id');
+			$data = $this->m->load_nilai($Id);
+			$result['status'] = true;
+			$result['Nilai'] = $data->Nilai;
+			echo json_encode($result);
+		} catch (PDOException $e) {
+			$result['status'] = "gagal";
+			$result['pesan'] = $e->getMessage();
+			echo json_encode($result);
+		}
+	}
+
+	public function save_nilai(){
+		$result = array();
+		try {
+			$Id = $this->input->post('Id');
+			$data['Nilai'] = $this->input->post("Nilai");
+			$this->m->update_nilai($data,$Id);
+			$r['status'] = true;
+			$r['pesan'] = "Data Nilai K-fakultas berhasil di masukkan kedalam sistem";
+			echo json_encode($r);
 		} catch (PDOException $e) {
 			$result['status'] = "gagal";
 			$result['pesan'] = $e->getMessage();

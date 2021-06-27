@@ -77,7 +77,7 @@
                         <div class="form-group">
                             <div class='col-sm-6'>
                                 <label class="control-label">Faklutas</label>
-                                <select name="IdFaklutas" id="IdFakultas" class='form-control FormInput'>
+                                <select name="IdFakultas" id="IdFakultas" class='form-control FormInput'>
                                     <option value="0">Bukan Admin Fakultas</option>
                                     <?php if(count($fakultas) > 0){ ?>
                                     <?php foreach($fakultas as $key => $items){ ?>

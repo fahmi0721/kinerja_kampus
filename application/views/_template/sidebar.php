@@ -14,6 +14,8 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
+          <?php $aktif = empty($this->uri->segment(1)) ? "class='active'" : ""; ?>
+          <li <?= $aktif ?>><a href="<?= base_url('/') ?>"><i class="fa fa-dashboard"></i> <span>Dashnoard</span></a></li>
         <?php if($this->session->userdata('KodeLevel') == 0){ ?>
         <li class="treeview">
           <a href="#">
@@ -34,7 +36,7 @@
         <?php if($this->session->userdata('KodeLevel') == 0){ ?>
           <li class="header">MAIN SETTING</li> 
           <?php $aktif = $this->uri->segment(1) == "users" ? "class='active'" : ""; ?>
-          <li><a href="<?= base_url('users/') ?>"><i class="fa fa-users"></i> <span>Users</span></a></li>
+          <li <?= $aktif ?>><a href="<?= base_url('users/') ?>"><i class="fa fa-users"></i> <span>Users</span></a></li>
         <?php } ?>
       </ul>
     </section>

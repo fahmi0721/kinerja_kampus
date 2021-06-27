@@ -40,6 +40,10 @@
                             <th width="15%">Periode</th>
                             <th>Indikator Kompetensi</th>
                             <th width="10%">Bobot</th>
+                            <th width="10%">Nilai</th>
+                            <?php if($this->session->userdata('KodeLevel') != "2"): ?>
+                              <th width="10%">Aksi</th>
+                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +57,10 @@
                                     echo "<td>{$item['Periode']}</td>";
                                     echo "<td>{$Kopetensi['Nama']}</td>";
                                     echo "<td>{$Kopetensi['Bobot']}</td>";
+                                    echo "<td>{$item['Nilai']}</td>";
+                                    if($this->session->userdata('KodeLevel') != "2"):
+                                      echo "<td><a href='javascript:void(0)' onclick=\"UpdateNilai('".$item['Id']."')\" class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Update Nilai</a></td>";
+                                    endif;
                                     echo "</tr>";
                                 }
                             }else{
@@ -71,3 +79,33 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+  
+<div class='modal fade in' id='modal' data-keyboard="false" data-backdrop="static" tabindex='0' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+<div class='modal-dialog'>
+<div class='modal-content'>
+<div class="modal-header">
+    <button type="button" class="close" id="close_modal" data-dismiss="modal">&times;</button>
+    <h5 class="modal-title"></h5>
+</div>
+<div class='modal-body'>
+        <form action="javascript:void(0)" id="FormData">
+            <input type="hidden" name="Id" id="Id" class="FormInput">
+            <div class='form-group'>
+                <label for="Nilai" class='control-label'>Nilai</label>
+                <input type="text" class="form-control FormInput" name="Nilai" id="Nilai" placeholder="Input Nilai">
+            </div>
+        </form>
+    
+    
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" onclick="SubmitData()"><i class="fa fa-check-square"></i> &nbsp;Update Niilai</button>
+                <button type="button" class="btn btn-sm btn-danger" onclick="ClearModal()"><i class="fa fa-mail-reply"></i> &nbsp;Batal</button>
+        </div>
+
+</div>
+</div>
+</div>
+</div>
+
+  <?php $this->load->view('modul/k_fakultas/detail_js'); ?>

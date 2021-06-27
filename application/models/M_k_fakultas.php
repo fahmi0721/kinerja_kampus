@@ -10,6 +10,9 @@ class M_k_fakultas extends CI_Model {
     private function _get_datatables_query()
     {
         $this->db->select("Id,Periode, COUNT(Periode) as tot");
+        if($this->session->KodeLevel === "2"){
+            $this->db->where("IdFakultas",$this->session->userdata('IdFakultas'));
+        }
         $this->db->from($this->table);
  
         $i = 0;
@@ -153,6 +156,18 @@ class M_k_fakultas extends CI_Model {
     function load_data_periode($Periode){
         $this->db->where("Periode",$Periode);
         return$this->db->get("tbl_kfakultas")->result_array();
+    }
+
+    function load_nilai($Id){
+        $this->db->select("Nilai");
+        $this->db->where("Id",$Id);
+        return $this->db->get("tbl_kfakultas")->row();
+    }
+
+    function update_nilai($data,$Id){
+        $this->db->where("Id", $Id);
+        $this->db->update("tbl_kfakultas", $data);
+        return $this->db->affected_rows();
     }
 
 

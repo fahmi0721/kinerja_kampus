@@ -74,7 +74,21 @@
                                 </select>
                             </div>
                         </div>
-                        
+                        <div class="form-group">
+                            <div class='col-sm-6'>
+                                <label class="control-label">Faklutas</label>
+                                <select name="IdFakultas" id="IdFakultas" class='form-control FormInput'>
+                                    <option value="0">Bukan Admin Fakultas</option>
+                                    <?php if(count($fakultas) > 0){ ?>
+                                    <?php foreach($fakultas as $key => $items){ 
+                                      $sel = $items->Id === $Item->IdFakultas ? "selected" : "";
+                                    ?>
+                                        <option value="<?= $items->Id ?>" <?= $sel ?>><?= $items->Nama; ?></option>
+                                    <?php } } ?>
+                                </select>
+                            </div>
+                            
+                        </div>
                         
                         
                         <div class="form-group">

@@ -69,6 +69,7 @@ class Users extends CI_Controller {
 	}
 
 	public function edit(){
+		$data['fakultas'] = $this->m->load_fakultas();
 		$Id = $this->input->get("Id");
 		$data['Item'] = $this->m->get_data($Id);
 		$this->load->view('_template/header');
