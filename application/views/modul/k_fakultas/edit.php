@@ -50,31 +50,53 @@ $CI->load->library('mylib');
                         <div class="form-group">
                             <div class='col-sm-6'>
                                 <label class="control-label">Pilih Periode<span class='text-danger'>*</span></label>
+                                <div class='input-group'>
                                 <select name="Periode" id="Periode" class="form-control FormInput">
                                     <option value="">Pilih Periode</option>
                                     <?php 
-                                        $now = date("Y-m");
-                                        for($i = "2021-05"; $i <= $now; $i++){
-                                        $pisah = explode("-",$i);
-                                        $bulan = $pisah[1];
-                                        $tahun = $pisah[0];
-                                        $uraian = $CI->mylib->getBulan($bulan)." ".$tahun;
+                                        $Trw = array("TRWI" => "Triwulan I","TRWII" => "Triwulan II","TRWIII" => "Triwlan III","TRWIV" => "Triwulan IV");
+                                        $now = date("Y");
+                                        foreach($Trw as $key => $idata){
                                     ?>
-                                    <option value="<?= $i ?>"><?= $uraian ?></option>
+                                    <option value="<?= $key ?>"><?= $idata ?></option>
                                     <?php } ?>
                                 </select>
+                                <span class='input-group-addon'>Tahun</span>
+                                <select name="Tahun" id="Tahun" class="form-control FormInput">
+                                    <option value="">Pilih Tahun</option>
+                                    <?php 
+                                        for($i=2021; $i <= date("Y"); $i++){
+                                    ?>
+                                    <option value="<?= $i ?>"><?= $i ?></option>
+                                    <?php } ?>
+                                </select>
+                                </div>
                                 
                             </div>
                             <div class='col-sm-6'>
-                                <label class="control-label">Pilih Kompetensi<span class='text-danger'>*</span></label>
-                                <select name="IdKompetensi" id="IdKompetensi" class="select-kompetensi form-control FormInput">
-                                    <option value="">Pilih Kompetensi</option>
+                                <label class="control-label">Pilih Indikator Kinerja<span class='text-danger'>*</span></label>
+                                <select name="IdSub" id="IdSub" class="select-kompetensi form-control FormInput">
+                                    <option value="">Pilih Kinerja</option>
                                     <?php if(count($Ip) > 0){ ?>
                                     <?php foreach($Ip as $key => $item){ ?>
-                                    <option value="<?= $item['Id'] ?>"><?= $item['Nama']." [".$item['Bobot']."]" ?></option>
+                                    <option value="<?= $item['Id'] ?>"><?= $item['Nama'] ?></option>
                                     <?php } ?>
                                     <?php } ?>
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class='col-sm-6'>
+                                <label class="control-label">Nilai<span class='text-danger'>*</span></label>
+                                <input type="text" class="form-control FormInput" onkeyup="angka(this)" name="Nilai" id="Nilai" placeholder="Nilai">
+                            </div>
+                            <div class='col-sm-6'>
+                                <label class="control-label">Bukti</label>
+                                <div class="input-group">
+                                    <input type="file" class="form-control FormInput" name="Bukti" id="Bukti">
+                                    <span id="ttl" data-toggle='tooltip' title="download format bukti" class="input-group-addon"><a href="#"><i class='fa fa-download'></i></a></span>  
+                                </div>
                             </div>
                         </div>
 
@@ -94,8 +116,9 @@ $CI->load->library('mylib');
                                             <tr>
                                                 <th class="text-center" width="8px">No</th>
                                                 <th>Indikator Kompetensi</th>
-                                                <th class="text-center" width="15%">Periode</th>
-                                                <th class="text-center" width="10%">Bobot</th>
+                                                <th class="text-center">Periode</th>
+                                                <th class="text-center">Nilai</th>
+                                                <th class="text-center" width="10%">Bukti</th>
                                                 <th class="text-center" width="8%">Aksi</th>
                                             </tr>
                                         </thead>

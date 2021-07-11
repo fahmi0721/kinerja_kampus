@@ -38,7 +38,7 @@
                         <tr>
                             <th width='10px' class='text-center'>No</th>
                             <th>Periode</th>
-                            <th>Jumlah Komptensi</th>
+                            <th>Jumlah Kinerja</th>
                             <th width='8%' class='text-center'>Aksi</th>
                         </tr>
                     </thead>

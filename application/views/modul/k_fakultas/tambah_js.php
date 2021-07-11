@@ -3,6 +3,10 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
     SelectForm();
     LoadDataSementara();
+    $("#ttl").prop("title","Pilih Indikator Kinerja dan dapatkan format bukti disini!");
+    $("#ttl").attr('title', 'Pilih Indikator Kinerja dan dapatkan format bukti disini!')
+          .tooltip('fixTitle')
+          .tooltip('show');
 })
 
 function StopLoad(){
@@ -13,10 +17,40 @@ function StartLoad(){
     $(".LoadingState").show();
 }
 
+$('#IdSub').on('select2:select', function (e) {
+    var data = e.params.data;
+    var iData = "IdSub="+data.id;
+    $.ajax({
+        type : "POST",
+        url : "<?= base_url('k_fakultas/get_file') ?>",
+        data : iData,
+        beforeSend : function(){
+            StartLoad();
+        },
+        success : function(res){
+            $("#proses").html("");
+            var result = JSON.parse(res);
+            if(result['status'] === true){
+                var href = "<?= base_url('k_fakultas/download_format/') ?>"+result['file'];
+                $("#ttl").find("a").prop("href",href);
+                $("#ttl").prop("title","Download File Format Disni!");
+                $("#ttl").attr('title', 'Download File Format Disni!')
+                    .tooltip('fixTitle')
+                    .tooltip('show');
+            }else{
+              
+            }
+        },
+        error : function(er){
+            $("#proses").html(er.responseText);
+        }
+
+    })
+});
 
 function ValidasiForm(){
-    var iForm = ["Periode","IdKompetensi"];
-    var iKet = ["Periode Belum Lengkap","Kompetensi belum lengkap"];
+    var iForm = ["Periode","Tahun","IdSub","Nilai","Bukti"];
+    var iKet = ["Periode Belum Lengkap","Periode Belum Lengkap","Indikator Kinerja belum lengkap","Nilai belum lengkap","Bukti belum lengkap"];
     for(var i=0; i < iForm.length; i++){
         if($("#"+iForm[i]).val() == ""){
             StopLoad();
@@ -41,11 +75,14 @@ $("#btnTambah").click(function(){
 });
 
 function SubmitDataSementara(){
-    var iData = $("#FormData").serialize();
+    var iData = new FormData($("#FormData")[0]);
     $.ajax({
         type : "POST",
         url : "<?= base_url('k_fakultas/save_temp') ?>",
         data : iData,
+        contentType: false,
+        processData : false,
+        chace: false,
         beforeSend : function(){
             StartLoad();
         },
@@ -63,6 +100,7 @@ function SubmitDataSementara(){
         },
         error : function(er){
             console.log(er);
+            $("#proses").html(er['responseText']);
         }
 
     })
@@ -114,7 +152,7 @@ function LoadDataSementara(){
                     html += "<td class='text-center'>"+no+"</td>";
                     html += "<td>"+iData['Nama']+"</td>";
                     html += "<td>"+iData['Periode']+"</td>";
-                    html += "<td class='text-center'>"+iData['Bobot']+"</td>";
+                    html += "<td class='text-center'><a class='btn btn-xs btn-success' href='<?= base_url('k_fakultas/download_bukti_sem/') ?>"+btoa(iData['Bukti'])+"'><i class='fa fa-file'></i></a></td>";
                     html += "<td class='text-center'><a href='javascript:void(0)' onclick=\"ConfirmHapus('"+iData['Id']+"')\" data-toggle='tooltip' title='Hapus Data' class='btn btn-danger btn-xs'><i class='fa fa-trash'></i></a></td>";
                     html += "</tr>";
                     no++
@@ -167,6 +205,7 @@ function SubmitData(){
         },
         error : function(er){
             console.log(er);
+            $("#proses").html(er['responseText']);
         }
 
     })

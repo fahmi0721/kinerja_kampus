@@ -72,19 +72,47 @@ class M_k_fakultas extends CI_Model {
         return $this->db->count_all_results();
     }
 
+    function load_file_format($Id){
+        $this->db->where("Id",$Id);
+        $r = $this->db->get("tbl_subip")->row();
+        return $r->Format;
+    }
+
     function load_kompetensi(){
-        $query = $this->db->get("tbl_ip");
+        $query = $this->db->get("tbl_subip");
         return $query->result_array();
     }
 
     function relolad_data_temp($Periode){
-        $this->db->select("Periode, IdKompetensi,IdFakultas");
+        $this->db->select("Periode, IdSub,IdFakultas,Bukti,Nilai");
         $this->db->where("Periode",$Periode);
         $data = $this->db->get("tbl_kfakultas")->result_array();
         foreach($data as $item){    
             $item['IdUser'] = $this->session->userdata("Id");
+            copy("./public/file/bukti/".$item['Bukti'],"./public/file/bukti_sementara/".$item['Bukti']);
             $this->save_data_temp($item);
         }
+    }
+
+    function hapus_file_tmp($Id){
+        $r = $this->db->get("tbl_kfakultas_sementara")->row();
+        if(file_exists("./public/file/bukti_sementara/".$r->Bukti) && $r->Bukti != ""){
+            unlink("./public/file/bukti_sementara/".$r->Bukti);
+        }
+        return true;
+    }
+
+    function hapus_file($Periode){
+        $this->db->select("Bukti");
+        $this->db->where("Periode",$Periode);
+        $data = $this->db->get("tbl_kfakultas")->result_array();
+        foreach($data as $item){    
+           $files = "./public/file/bukti/".$item['Bukti'];
+           if(file_exists($files) && $item['Bukti'] != ""){
+               unlink($files);
+           }
+        }
+        return true;
     }
    
     function save_data($data){
@@ -93,10 +121,10 @@ class M_k_fakultas extends CI_Model {
     }
 
     function load_data_temp($IdUser){
-        $this->db->select("tbl_kfakultas_sementara.Id,tbl_kfakultas_sementara.Periode, tbl_ip.Nama,tbl_ip.Bobot");
+        $this->db->select("tbl_kfakultas_sementara.Id,tbl_kfakultas_sementara.Nilai,tbl_kfakultas_sementara.Bukti,tbl_kfakultas_sementara.Periode, tbl_subip.Nama");
         $this->db->where("tbl_kfakultas_sementara.IdUser",$IdUser);
         $query = $this->db->from("tbl_kfakultas_sementara");
-        $query = $this->db->join("tbl_ip", "tbl_ip.Id = tbl_kfakultas_sementara.IdKompetensi");
+        $query = $this->db->join("tbl_subip", "tbl_subip.Id = tbl_kfakultas_sementara.IdSub");
         $query = $this->db->get();
         return $query->result_array();
     }
@@ -130,9 +158,9 @@ class M_k_fakultas extends CI_Model {
         return $this->db->affected_rows();
     }
 
-    function get_kompetensi($Id){
+    function get_sub($Id){
         $this->db->where("Id",$Id);
-        return json_encode($this->db->get("tbl_ip")->row());
+        return $this->db->get("tbl_subip")->row();
     }
 
     function get_fakultas($Id){
@@ -141,12 +169,15 @@ class M_k_fakultas extends CI_Model {
     }
 
     function load_sementara($Id){
-        $this->db->select("IdKompetensi, Periode, IdFakultas");
+        $this->db->select("IdSub, Periode, IdFakultas,Nilai,Bukti");
         $this->db->where("IdUser",$Id);
         $data =  $this->db->get("tbl_kfakultas_sementara")->result_array();
         $rData = array();
         foreach($data as $item){
-            $item['Kompetensi'] = $this->get_kompetensi($item['IdKompetensi']);
+            $Sub = $this->get_sub($item['IdSub']);
+            $item['IdKompetensi'] = $Sub->IdIp;
+            $item['Kompetensi'] = $Sub->Ip;
+            $item['Sub'] = json_encode($Sub);
             $item['Fakultas'] = $this->get_fakultas($item['IdFakultas']);
             $rData[] = $item;
         }

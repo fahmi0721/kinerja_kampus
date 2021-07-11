@@ -39,11 +39,8 @@
                             <th width='10px' class='text-center'>No</th>
                             <th width="15%">Periode</th>
                             <th>Indikator Kompetensi</th>
-                            <th width="10%">Bobot</th>
                             <th width="10%">Nilai</th>
-                            <?php if($this->session->userdata('KodeLevel') != "2"): ?>
-                              <th width="10%">Aksi</th>
-                            <?php endif; ?>
+                            <th width="5%">Bukti</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,16 +48,14 @@
                             if(count($data) > 0){
                                 $No=1;
                                 foreach($data as $item){
-                                    $Kopetensi = json_decode($item['Kompetensi'],true);
+                                    $Sub = json_decode($item['Sub'],true);
+                                    $url = base_url("k_fakultas/download_bukti/").base64_encode($item['Bukti']);
                                     echo "<tr>";
                                     echo "<td class='center'>{$No}</td>";
                                     echo "<td>{$item['Periode']}</td>";
-                                    echo "<td>{$Kopetensi['Nama']}</td>";
-                                    echo "<td>{$Kopetensi['Bobot']}</td>";
+                                    echo "<td>{$Sub['Nama']}</td>";
                                     echo "<td>{$item['Nilai']}</td>";
-                                    if($this->session->userdata('KodeLevel') != "2"):
-                                      echo "<td><a href='javascript:void(0)' onclick=\"UpdateNilai('".$item['Id']."')\" class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Update Nilai</a></td>";
-                                    endif;
+                                    echo "<td class='text-center'><a href='".$url."' class='btn btn-xs btn-success'><i class='fa fa-file'></i></a></td>";
                                     echo "</tr>";
                                     $No++;
                                 }

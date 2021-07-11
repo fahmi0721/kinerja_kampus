@@ -100,7 +100,7 @@ class Subip extends CI_Controller {
 			$r['message'] = $this->upload->display_errors();
 			return $r;
 		}
-}
+	}
 
 	public function save(){
 		$r = array();

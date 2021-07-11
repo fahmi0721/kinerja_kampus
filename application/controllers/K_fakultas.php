@@ -43,10 +43,8 @@ class K_fakultas extends CI_Controller {
 			$btn = $this->session->userdata('KodeLevel') === "2" ? "<a data-toggle='tooltip' href='".base_url()."k_fakultas/edit?Periode=".$field->Periode."' title='Edit Data' class='btn btn-primary btn-xs'><i class='fa fa-edit'></i></a><a data-toggle='tooltip' href='javascript:void(0)' onclick=\"HapusData('".$field->Periode."')\" title='Hapus Data' class='btn btn-danger btn-xs'><i class='fa fa-trash'></i></a>" : "";
             $no++;
             $row = array();
-			$pisah = explode("-",$field->Periode);
-			$bulan = $this->mylib->getBulan($pisah[1]);
             $row[] = $no;
-            $row[] = $bulan." ".$pisah[0];
+            $row[] = $field->Periode;	
             $row[] = $field->tot;
             $row[] = "<center><span class='btn-group'><a data-toggle='tooltip' href='".base_url()."k_fakultas/detail?Periode=".$field->Periode."' title='Lihat Data' class='btn btn-success btn-xs'><i class='fa fa-eye'></i></a>".$btn."</span></center>";
             $data[] = $row;
@@ -100,6 +98,7 @@ class K_fakultas extends CI_Controller {
 	public function hapus_data_temp(){
 		try {
 			$Id = $this->input->post("Id");
+			$this->m->hapus_file_tmp($Id);
 			$save = $this->m->hapus_data_temp($Id);
 			$r['status'] = true;
 			$r['pesan'] = "Data K-Fakultas berhasil di hapus kedalam sistem";
@@ -112,17 +111,49 @@ class K_fakultas extends CI_Controller {
 		}
 	}
 
+	function do_upload($dir){
+		$r = array();
+        $config['upload_path']=$dir; //path folder file upload
+        $config['allowed_types'] = 'xls|xlsx';
+        $config['encrypt_name'] = TRUE; //enkripsi file name upload
+         
+        $this->load->library('upload',$config); //call library upload 
+        if($this->upload->do_upload("Bukti")){ //upload file
+            $data = array('upload_data' => $this->upload->data()); //ambil file name yang diupload
+			$r['status'] = true;
+			$r['data'] = $this->upload->data();
+			$r['message'] = "berhasil di upload";
+			return $r;
+        }else{
+			$r['status'] = false;
+			$r['data'] = "";
+			$r['message'] = $this->upload->display_errors();
+			return $r;
+		}
+	}
+
 	public function save_temp(){
 		$r = array();
 		try {
-			$data['Periode'] = $this->input->post('Periode');
-			$data['IdKompetensi'] = $this->input->post('IdKompetensi');
-			$data['IdUser'] = $this->session->userdata('Id');
-			$data['IdFakultas'] = $this->session->userdata('IdFakultas');
-			$save = $this->m->save_data_temp($data);
-			$r['status'] = true;
-			$r['pesan'] = "Data K-Fakultas berhasil di masukkan kedalam sistem";
-			echo json_encode($r);
+			$dir = "./public/file/bukti_sementara/";
+			$upl = $this->do_upload($dir);
+			if($upl['status'] == true){
+				$Bukti = $upl['data']['file_name'];
+				$data['Periode'] = $this->input->post('Periode')." ".$this->input->post('Tahun');
+				$data['IdSub'] = $this->input->post('IdSub');
+				$data['Nilai'] = $this->input->post('Nilai');
+				$data['Bukti'] = $Bukti;
+				$data['IdUser'] = $this->session->userdata('Id');
+				$data['IdFakultas'] = $this->session->userdata('IdFakultas');
+				$save = $this->m->save_data_temp($data);
+				$r['status'] = true;
+				$r['pesan'] = "Data K-Fakultas berhasil di masukkan kedalam sistem";
+				echo json_encode($r);
+			}else{
+				$r['status'] = false;
+				$r['pesan'] = $upl['message'];
+				echo json_encode($r);
+			}
 		
 		} catch (PDOException $e) {
 			$r['status'] = false;
@@ -139,8 +170,15 @@ class K_fakultas extends CI_Controller {
 				$data['Periode'] = $item['Periode'];
 				$data['IdKompetensi'] = $item['IdKompetensi'];
 				$data['Kompetensi'] = $item['Kompetensi'];
+				$data['IdSub'] = $item['IdSub'];
+				$data['Sub'] = $item['Sub'];
 				$data['IdFakultas'] = $item['IdFakultas'];
 				$data['Fakultas'] = $item['Fakultas'];
+				$data['Nilai'] = $item['Nilai'];
+				$data['Bukti'] = $item['Bukti'];
+				$data['IdUser'] = $this->session->userdata('Id');
+				copy("./public/file/bukti_sementara/".$item['Bukti'],"./public/file/bukti/".$item['Bukti']);
+				unlink("./public/file/bukti_sementara/".$item['Bukti']);
 				$save = $this->m->save_data($data);
 			}
 			$this->m->reset_data_temp($this->session->userdata('Id'));
@@ -165,8 +203,14 @@ class K_fakultas extends CI_Controller {
 				$data['Periode'] = $item['Periode'];
 				$data['IdKompetensi'] = $item['IdKompetensi'];
 				$data['Kompetensi'] = $item['Kompetensi'];
+				$data['IdSub'] = $item['IdSub'];
+				$data['Sub'] = $item['Sub'];
 				$data['IdFakultas'] = $item['IdFakultas'];
 				$data['Fakultas'] = $item['Fakultas'];
+				$data['Nilai'] = $item['Nilai'];
+				$data['Bukti'] = $item['Bukti'];
+				$data['IdUser'] = $this->session->userdata('Id');
+				copy("./public/file/bukti_sementara/".$item['Bukti'],"./public/file/bukti/".$item['Bukti']);
 				$save = $this->m->save_data($data);
 			}
 			$this->m->reset_data_temp($this->session->userdata('Id'));
@@ -187,6 +231,7 @@ class K_fakultas extends CI_Controller {
 		$result = array();
 		try {
 			$Periode = $this->input->post('Periode');
+			$this->m->hapus_file($Periode);
 			$update = $this->m->hapus_data($Periode);
 			$result['status'] = "sukses";
 			$result['pesan'] = "Data K-Fakultas berhasil dihapus";
@@ -227,6 +272,40 @@ class K_fakultas extends CI_Controller {
 			$result['pesan'] = $e->getMessage();
 			echo json_encode($result);
 		}
+	}
+
+
+	public function get_file(){
+		$data = array();
+		$IdSub = $this->input->post("IdSub");
+		$file = $this->m->load_file_format($IdSub);
+		if(!empty($file)){
+			$data['status'] = true;
+			$data['file'] = base64_encode($file);
+			echo json_encode($data);
+		}else{
+			$data['status'] = false;
+			$data['file'] = "";
+			echo json_encode($data);
+		}
+	}
+
+	function download_format(){
+		$file = base64_decode($this->uri->segment(3));
+		$this->load->helper('download');
+		force_download("./public/file/format/".$file,null);
+	}
+
+	function download_bukti_sem(){
+		$file = base64_decode($this->uri->segment(3));
+		$this->load->helper('download');
+		force_download("./public/file/bukti_sementara/".$file,null);
+	}
+
+	function download_bukti(){
+		$file = base64_decode($this->uri->segment(3));
+		$this->load->helper('download');
+		force_download("./public/file/bukti/".$file,null);
 	}
 
 }

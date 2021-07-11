@@ -40,12 +40,16 @@ $("#btnTambah").click(function(){
     }
 });
 
+
 function SubmitDataSementara(){
-    var iData = $("#FormData").serialize();
+    var iData = new FormData($("#FormData")[0]);
     $.ajax({
         type : "POST",
         url : "<?= base_url('k_fakultas/save_temp') ?>",
         data : iData,
+        contentType: false,
+        processData : false,
+        chace: false,
         beforeSend : function(){
             StartLoad();
         },
@@ -63,6 +67,7 @@ function SubmitDataSementara(){
         },
         error : function(er){
             console.log(er);
+            $("#proses").html(er['responseText']);
         }
 
     })
@@ -114,7 +119,8 @@ function LoadDataSementara(){
                     html += "<td class='text-center'>"+no+"</td>";
                     html += "<td>"+iData['Nama']+"</td>";
                     html += "<td>"+iData['Periode']+"</td>";
-                    html += "<td class='text-center'>"+iData['Bobot']+"</td>";
+                    html += "<td>"+iData['Nilai']+"</td>";
+                    html += "<td class='text-center'><a class='btn btn-xs btn-success' href='<?= base_url('k_fakultas/download_bukti_sem/') ?>"+btoa(iData['Bukti'])+"'><i class='fa fa-file'></i></a></td>";
                     html += "<td class='text-center'><a href='javascript:void(0)' onclick=\"ConfirmHapus('"+iData['Id']+"')\" data-toggle='tooltip' title='Hapus Data' class='btn btn-danger btn-xs'><i class='fa fa-trash'></i></a></td>";
                     html += "</tr>";
                     no++
