@@ -4,13 +4,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Modul Indikator Penilaian
-        <small>Ubah Indikator Penilaian</small>
+        Modul Indikator Kinerja
+        <small>Ubah Indikator Kinerja</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?= base_url() ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="<?= base_url('ip/') ?>"><i class="fa fa-users"></i> Detail Data Indikator Penilaian</a></li>
-        <li class="active">Ubah Indikator Penilaian</li>
+        <li><a href="<?= base_url('ip/') ?>"><i class="fa fa-users"></i> Detail Data Indikator Kinerja</a></li>
+        <li class="active">Ubah Indikator Kinerja</li>
 
       </ol>
     </section>
@@ -21,7 +21,7 @@
       <!-- Default box -->
       <div class="box box-danger">
         <div class="box-header with-border">
-          <h3 class="box-title">Ubah Indikator Penilaian</h3>
+          <h3 class="box-title">Ubah Indikator Kinerja</h3>
 
           <div class="box-tools pull-right">
             <div class='btn-group' id='BtnControl'>
@@ -49,21 +49,21 @@
                                 <input class='form-control FormInput' value="<?= $Item->Nama; ?>" type='text' autocomplete='off' placeholder='Nama' name='Nama' id='Nama'>
                             </div>
                             <div class='col-sm-6'>
-                                <label class="control-label">Bobot<span class='text-danger'>*</span></label>
+                                <label class="control-label">Target<span class='text-danger'>*</span></label>
                                 <input class='form-control FormInput' value="<?= $Item->Bobot; ?>" type='text' autocomplete='off' placeholder='Bobot' name='Bobot' id='Bobot'>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <div class='col-sm-12'>
+                            <div class='col-sm-6'>
+                                <label class="control-label">Satuan<span class='text-danger'>*</span></label>
+                                <input class='form-control FormInput' type='text' value="<?= $Item->Satuan; ?>" autocomplete='off' placeholder='Satuan' name='Satuan' id='Satuan'>
+                            </div>
+                            <div class='col-sm-6'>
                                 <label class="control-label">Keterangan</label>
                                 <textarea class='form-control FormInput' rows="5" type='text' autocomplete='off' placeholder='Keterangan' name='Keterangan' id='Keterangan'><?= $Item->Keterangan; ?></textarea>
                             </div>
                            
                         </div>
-                        
-                        
-                        
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <div class='btn-group'>

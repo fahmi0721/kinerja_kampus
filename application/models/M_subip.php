@@ -1,9 +1,9 @@
 <?php
-class M_ip extends CI_Model {
+class M_subip extends CI_Model {
 
-    var $table = 'tbl_ip'; //nama tabel dari database
-    var $column_order = array('Nama','Keterangan',"Bobot","Satuan"); //field yang ada di table peserta
-    var $column_search = array('Nama','Keterangan',"Bobot","Satuan"); //field yang diizin untuk pencarian 
+    var $table = 'tbl_subip'; //nama tabel dari database
+    var $column_order = array('Nama','KeyData'); //field yang ada di table peserta
+    var $column_search = array('Nama','KeyData',"Ip"); //field yang diizin untuk pencarian 
     var $order = array('Id' => 'asc'); // default order 
  
 
@@ -68,32 +68,40 @@ class M_ip extends CI_Model {
         return $this->db->count_all_results();
     }
 
-    function get_data($Id){
-        $this->db->where("Id",$Id);
-        return $this->db->get("tbl_ip")->row();
-    }
-    
-    function cek_duplicate($Username){
-        $this->db->where("Username",$Username);
-        return $this->db->get("tbl_ip")->num_rows();
+    function get_ip(){
+        $this->db->from("tbl_ip");
+        return $this->db->get()->result_array();
     }
 
+    function get_data($Id){
+        $this->db->where("Id",$Id);
+        return $this->db->get($this->table)->row();
+    }
+   
+
     function save_data($data){
-        $this->db->insert("tbl_ip", $data);
+        $this->db->insert($this->table, $data);
         return $this->db->affected_rows();
     }
 
     function update_data($data,$Id){
         $this->db->where("Id", $Id);
-        $this->db->update("tbl_ip", $data);
+        $this->db->update($this->table, $data);
         return $this->db->affected_rows();
     }
 
     function hapus_data($Id){
         $this->db->where("Id", $Id);
-        $this->db->delete("tbl_ip");
+        $this->db->delete($this->table);
         return $this->db->affected_rows();
     }
+
+    function load_ip_data($Id){
+        $this->db->where("Id",$Id);
+        return json_encode($this->db->get("tbl_ip")->row());
+    }
+
+    
 
 }
 ?>

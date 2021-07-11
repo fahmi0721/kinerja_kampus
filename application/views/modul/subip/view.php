@@ -4,12 +4,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Modul Indikator Kinerja
-        <small>Data Indikator Kinerja</small>
+        Modul Sub Indikator Kinerja
+        <small>Data Sub Indikator Kinerja</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?= base_url() ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Data Indikator Kinerja</li>
+        <li class="active">Data Sub Indikator Kinerja</li>
       </ol>
     </section>
 
@@ -19,11 +19,11 @@
       <!-- Default box -->
       <div class="box box-danger">
         <div class="box-header with-border">
-          <h3 class="box-title">Data Indikator Kinerja</h3>
+          <h3 class="box-title">Data Sub Indikator Kinerja</h3>
 
           <div class="box-tools pull-right">
             <div class='btn-group' id='BtnControl'>
-                <a href="<?= base_url('ip/tambah/'); ?>" class='btn btn-sm btn-primary' title='Tambah Data' data-toggle='tooltip'><i class='fa fa-plus'></i> Tambah</a>
+                <a href="<?= base_url('subip/tambah/'); ?>" class='btn btn-sm btn-primary' title='Tambah Data' data-toggle='tooltip'><i class='fa fa-plus'></i> Tambah</a>
                 <button class='btn btn-sm btn-warning btn-flat' onclick="location.reload();" title='Reload' data-toggle='tooltip'><i class='fa fa-refresh'></i></button>
             </div>
           </div>
@@ -38,8 +38,8 @@
                         <tr>
                             <th width='10px' class='text-center'>No</th>
                             <th>Nama</th>
-                            <th>Target</th>
-                            <th>Keterangan</th>
+                            <th>Indikator Kinerja</th>
+                            <th>Key Data</th>
                             <th width='8%' class='text-center'>Aksi</th>
                         </tr>
                     </thead>
@@ -85,4 +85,4 @@
 </div>
 </div>
 </div>
-<?php $this->load->view('modul/ip/view_js'); ?>
+<?php $this->load->view('modul/subip/view_js'); ?>

@@ -43,7 +43,7 @@ class Ip extends CI_Controller {
             $row = array();
             $row[] = $no;
             $row[] = $field->Nama;
-            $row[] = $field->Bobot;
+            $row[] = $field->Bobot." ".$field->Satuan;
             $row[] = $field->Keterangan;
             $row[] = "<center><span class='btn-group'><a data-toggle='tooltip' href='".base_url()."ip/edit?Id=".$field->Id."' title='Ubah Data' class='btn btn-primary btn-xs'><i class='fa fa-edit'></i></a><a data-toggle='tooltip' href='javascript:void(0)' title='Hapus Data' onclick='HapusData(".$field->Id.")' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i></a></span></center>";
             $data[] = $row;
@@ -80,7 +80,8 @@ class Ip extends CI_Controller {
 		try {
 			$data['Nama'] = strtoupper($this->input->post('Nama'));
 			$data['Keterangan'] = $this->input->post('Keterangan');
-			$data['Bobot'] = strtoupper($this->input->post('Bobot'));
+			$data['Bobot'] = $this->input->post('Bobot');
+			$data['Satuan'] = $this->input->post('Satuan');
             $save = $this->m->save_data($data);
             $r['status'] = true;
             $r['pesan'] = "Data Indikator Penilaian dengan nama ".$data['Nama']." berhasil di masukkan kedalam sistem";
@@ -100,6 +101,7 @@ class Ip extends CI_Controller {
 			$data['Nama'] = strtoupper($this->input->post('Nama'));
 			$data['Bobot'] = strtoupper($this->input->post('Bobot'));
 			$data['Keterangan'] = $this->input->post('Keterangan');
+			$data['Satuan'] = $this->input->post('Satuan');
 			$update = $this->m->update_data($data,$Id);
 			$r['status'] =true;
 			$r['pesan'] = "Data Indikator Penilaian dengan Nama ".$data['Nama']." berhasil di ubah kedalam sistem";

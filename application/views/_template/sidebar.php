@@ -1,3 +1,6 @@
+<?php 
+    $mn = $this->uri->segment(1);
+?>
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
@@ -17,7 +20,12 @@
           <?php $aktif = empty($this->uri->segment(1)) ? "class='active'" : ""; ?>
           <li <?= $aktif ?>><a href="<?= base_url('/') ?>"><i class="fa fa-dashboard"></i> <span>Dashnoard</span></a></li>
         <?php if($this->session->userdata('KodeLevel') == 0){ ?>
-        <li class="treeview">
+        <?php 
+            $masterDatas = array("ip","fakultas","subip");
+            $sl = in_array($mn,$masterDatas) ? "active" : "";
+
+        ?>
+        <li class="treeview <?= $sl ?>">
           <a href="#">
             <i class="fa fa-archive"></i> <span>Mater Data</span>
             <span class="pull-right-container">
@@ -25,8 +33,13 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<?= base_url('ip/') ?>"><i class="fa fa-circle-o"></i> Indikator Penilaian</a></li>
-            <li><a href="<?= base_url('fakultas/') ?>"><i class="fa fa-circle-o"></i> Fakultas</a></li>
+            
+            <?php $ct = $mn == "ip" ? " class='active'" : ""; ?>
+            <li <?= $ct ?>><a href="<?= base_url('ip/') ?>"><i class="fa fa-circle-o"></i> Indikator Kinerja</a></li>
+            <?php $ct = $mn == "subip" ? " class='active'" : ""; ?>
+            <li <?= $ct ?>><a href="<?= base_url('subip/') ?>"><i class="fa fa-circle-o"></i>Sub Indikator Kinerja</a></li>
+            <?php $ct = $mn == "fakultas" ? "class='active'" : ""; ?>
+            <li <?= $ct ?>><a href="<?= base_url('fakultas/') ?>"><i class="fa fa-circle-o"></i> Fakultas</a></li>
           </ul>
         </li>
         <?php } ?>

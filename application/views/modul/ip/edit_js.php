@@ -10,8 +10,8 @@ function StartLoad(){
 }
 
 function Validasi(){
-    var iForm = ["Nama","Bobot"];
-    var iKet = ["Nama Belum Lengkap","Bobot Belum Lengkap"];
+    var iForm = ["Nama","Target","Satuan"];
+    var iKet = ["Nama Belum Lengkap","Target Belum Lengkap","Satuan Belum Lengkap"];
     for(var i=0; i < iForm.length; i++){
         if($("#"+iForm[i]).val() == ""){
             StopLoad();
